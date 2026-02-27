@@ -28,7 +28,7 @@ async function main() {
 
 // home route
 app.get("/", async(req,res)=>{
-    res.redirect("/listings") ;
+    res.send("im at root");
 });
 
 // index route
