@@ -1,13 +1,87 @@
 <% layout("layouts/boilerplate") %>
-<body>
-    <h3>Update this listing</h3>
-    <form method="POST" action="/listings/<%=listing._id%>?_method=PUT">
-        <input name="listing[title]" value="<%=listing.title%>" type="text"> <br><br>
-        <textarea name="listing[description]"><%=listing.description%></textarea>  <br><br>
-        <input name="listing[image]" value="<%=listing.image%>" type="text">  <br><br>
-        <input name="listing[price]" value="<%=listing.price%>" type="number">  <br><br>
-        <input name="listing[location]" value="<%=listing.location%>" type="text"> <br><br>
-        <input name="listing[country]" value="<%=listing.country%>" type="text"> <br><br>
-        <button>Update</button>
-    </form>
-</body>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        
+     
+        <div class="col-md-7 mx-auto">
+            
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4">
+
+                    <h3 class="text-center mb-4 fw-bold">
+                        Update Listing
+                    </h3>
+                    <br>
+
+                    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Title</label>
+                            <input name="listing[title]" 
+                                   value="<%= listing.title %>"
+                                   class="form-control rounded-3"
+                                   type="text" 
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Description</label>
+                            <textarea name="listing[description]" 
+                                      class="form-control rounded-3"
+                                      rows="4"
+                                      required><%= listing.description %></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Image URL</label>
+                            <input name="listing[image]" 
+                                   value="<%= listing.image %>"
+                                   class="form-control rounded-3"
+                                   type="url">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Price (₹)</label>
+                                <input name="listing[price]" 
+                                       value="<%= listing.price %>"
+                                       class="form-control rounded-3"
+                                       type="number" 
+                                       required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Location</label>
+                                <input name="listing[location]" 
+                                       value="<%= listing.location %>"
+                                       class="form-control rounded-3"
+                                       type="text" 
+                                       required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Country</label>
+                            <input name="listing[country]" 
+                                   value="<%= listing.country %>"
+                                   class="form-control rounded-3"
+                                   type="text" 
+                                   required>
+                            <br>
+                        </div>
+
+                        <div class="text-center">
+                            <button class="btn btn-primary btn-sm">
+                                Update
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

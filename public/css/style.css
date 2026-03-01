@@ -67,3 +67,41 @@ body{
 .card-text p{
     font-weight: 400 !important;
 }
+.listing-link{
+    text-decoration: none !important;
+}
+
+.card-img-overlay{
+    opacity: 0;
+}
+.card-img-overlay:hover{
+    opacity: 0.2;
+    background-color: white;
+}
+
+/* add listing form  */
+.btn{
+    background-color: #fe422d !important;
+    border: none !important;
+    width: 7rem;
+}
+.text-center{
+    color: black !important;
+}
+
+/* show listing in detail */
+
+.show-img {
+    border-radius: 15px;
+    object-fit: cover;
+}
+
+.btn-danger {
+    background-color: #ff4d4d !important;
+    border: none !important;
+}
+
+.btn-dark {
+    background-color: #222 !important;
+    border: none !important;
+}

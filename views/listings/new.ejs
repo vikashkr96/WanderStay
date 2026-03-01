@@ -1,14 +1,82 @@
 <% layout("layouts/boilerplate") %>
-</head>
-<body>
-    <h2>Create a new listing..</h2>
-    <form method="POST" action="/listings">
-        <input name="listing[title]" placeholder="enter title" type="text"> <br><br>
-        <textarea name="listing[description]" placeholder="write description" rows="10" cols="50">  </textarea>  <br><br>
-        <input name="listing[image]" placeholder="enter the image url / link" type="text">  <br><br>
-        <input name="listing[price]" placeholder="enter price" type="number">  <br><br>
-        <input name="listing[location]" placeholder="enter location" type="text"> <br><br>
-        <input name="listing[country]" placeholder="enter country" type="text"> <br><br>
-        <button>Add</button>
-    </form>
-</body>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        
+      
+        <div class="col-md-7 offset-md-0">
+            
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4">
+
+                    <h3 class="text-center mb-4 fw-bold ">
+                        Create New Listing 
+                    </h3>
+                    <br>
+
+                    <form method="POST" action="/listings">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Title</label>
+                            <input name="listing[title]" 
+                                   class="form-control rounded-3"
+                                   type="text" 
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Description</label>
+                            <textarea name="listing[description]" 
+                                      class="form-control rounded-3"
+                                      rows="4"
+                                      required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Image URL</label>
+                            <input name="listing[image]" 
+                                   class="form-control rounded-3"
+                                   type="url">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Price (₹)</label>
+                                <input name="listing[price]" 
+                                       class="form-control rounded-3"
+                                       type="number" 
+                                       required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-semibold">Location</label>
+                                <input name="listing[location]" 
+                                       class="form-control rounded-3"
+                                       type="text" 
+                                       required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Country</label>
+                            <input name="listing[country]" 
+                                   class="form-control rounded-3"
+                                   type="text" 
+                                   required>
+                                   <br>
+                        </div>
+
+                        <div class="text-center">
+                            <button class="btn btn-primary  ">
+                                Add
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

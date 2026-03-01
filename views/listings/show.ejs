@@ -1,20 +1,46 @@
 <% layout("layouts/boilerplate") %>
-<body>
-    <h3>Listing Details</h3>
-    
-    <ul>
-        <li> Title: <%= listing.title %></li>
-        <li>Description: <%= listing.description %></li>
-        <li>Price: &#8377; <%= listing.price.toLocaleString("en-IN")%> </li>
-        <li>Location: <%= listing.location %></li>
-        <li>Country: <%= listing.country %></li>
-        
-    </ul>
-    <br>
-    <a href="/listings/<%=listing._id%>/edit">Edit this listing</a>
-    <br><br>
-    <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
-            <button>delete this listing</button>
-            <br><br>
-    </form>
-</body>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-8 offset-2">
+
+                <h3 class="mb-4 fw-bold ">Listing Details</h3>
+
+                <!-- Image -->
+                <img src="<%= listing.image %>" class="img-fluid rounded-4 shadow-sm mb-3"
+                    style="height: 300px; width: 100%; object-fit: cover;">
+
+                <!-- Details -->
+                <div>
+                    <h5 class="fw-bold">
+                        <%= listing.title %>
+                    </h5>
+                    <p class="mb-1">
+                        <%= listing.description %>
+                    </p>
+                    <p class="mb-1">₹ <%= listing.price.toLocaleString("en-IN") %>
+                    </p>
+                    <p class="mb-1">
+                        <%= listing.location %>
+                    </p>
+                    <p class="mb-3">
+                        <%= listing.country %>
+                    </p>
+
+                    <!-- Buttons -->
+                    <div class="d-flex gap-3">
+                        <a href="/listings/<%= listing._id %>/edit" class="btn btn-danger btn-sm px-4">
+                            Edit
+                        </a>
+
+                        <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
+                            <button class="btn btn-dark btn-sm px-4">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
