@@ -14,7 +14,7 @@
                     </h3>
                     <br>
 
-                    <form method="POST" action="/listings">
+                    <form method="POST" action="/listings" novalidate class="needs-validation">
 
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Title</label>
@@ -22,6 +22,7 @@
                                    class="form-control rounded-3"
                                    type="text" 
                                    required>
+                                   <div class="valid-feedback">Title looks good</div>
                         </div>
 
                         <div class="mb-3">
@@ -30,6 +31,7 @@
                                       class="form-control rounded-3"
                                       rows="4"
                                       required></textarea>
+                                      <div class="invalid-feedback">Please enter a short description</div>
                         </div>
 
                         <div class="mb-3">
@@ -46,23 +48,26 @@
                                        class="form-control rounded-3"
                                        type="number" 
                                        required>
+                                       <div class="invalid-feedback">Price should be valid</div>
                             </div>
-
+                        
                             <div class="col-md-6 mb-3">
-                                <label class="form-label fw-semibold">Location</label>
-                                <input name="listing[location]" 
+                                <label class="form-label fw-semibold">Country</label>
+                                <input name="listing[country]" 
                                        class="form-control rounded-3"
                                        type="text" 
                                        required>
+                                       <div class="invalid-feedback">Country name should be valid</div>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Country</label>
-                            <input name="listing[country]" 
+                            <label class="form-label fw-semibold">Location</label>
+                            <input name="listing[location]" 
                                    class="form-control rounded-3"
                                    type="text" 
                                    required>
+                                   <div class="invalid-feedback">Location should be valid</div>
                                    <br>
                         </div>
 
