@@ -52,7 +52,7 @@ body{
 
 
 /* cards */
-.card{
+.listing-card{
     border: none !important;
     margin-bottom: 2rem;
 }
@@ -85,6 +85,13 @@ body{
     border: none !important;
     width: 7rem;
 }
+
+/* .greeen{
+    background-color: green !important;
+    border-radius: .5 rem !important;
+    color: white !important;
+    border: none !important;
+} */
 .text-center{
     color: black !important;
 }
