@@ -47,6 +47,7 @@ const validateListing = (req, res, next)=>{
 
     next();
 };
+
 // middleware for validate review ie: Schema validation => server side validation
 const validateReview = (req, res, next)=>{
     let { error } = reviewSchema.validate(req.body);
