@@ -5,6 +5,8 @@ const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
+const session = require("express-session");
+const flash = require("connect-flash");
 
 // requiring the routes (express routers)
 const listings = require("./routes/listing.js");
@@ -28,10 +30,38 @@ async function main() {
     await mongoose.connect(MONGO_URL);
 }
 
+// session options 
+const sessionOption = {
+    secret: "mysupersecretcode",
+    resave:false,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000 ,
+        maxAge: 7 * 24 * 60 * 60 * 1000 ,
+        httpOnly: true,
+    },
+}
+
+
+
 // home route
 app.get("/", async (req, res) => {
     res.send("im at root");
 });
+
+
+// using sessions
+app.use(session(sessionOption));
+// using flash
+app.use(flash());
+// middleware for flash
+app.use((req,res,next)=>{
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
+});
+
+
 
 
 app.use("/listings",listings);

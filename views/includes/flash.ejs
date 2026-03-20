@@ -1,0 +1,47 @@
+<!-- flash for success -->
+
+<!--  auto close after 5 sec  -->
+<% if (success && success.length) { %>
+  <div class="d-flex justify-content-center mt-3">
+    <div id="flashMsg" class="alert alert-success alert-dismissible fade show shadow-lg px-4 py-3 rounded-3 w-50 text-center" role="alert">
+      
+      <strong class="me-2"><%= success %></strong>
+
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      let alert = document.getElementById("flashMsg");
+      if (alert) {
+        let bsAlert = new bootstrap.Alert(alert);
+        bsAlert.close();
+      }
+    }, 5000); 
+  </script>
+<% } %>
+
+<!-- flash for error -->
+
+<!--  auto close after 5 sec  -->
+<% if (error && error.length) { %>
+  <div class="d-flex justify-content-center mt-3">
+    <div id="flashMsg" class="alert alert-danger alert-dismissible fade show shadow-lg px-4 py-3 rounded-3 w-50 text-center" role="alert">
+      
+      <strong class="me-2">❌ <%= error %></strong>
+
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      let alert = document.getElementById("flashMsg");
+      if (alert) {
+        let bsAlert = new bootstrap.Alert(alert);
+        bsAlert.close();
+      }
+    }, 5000); 
+  </script>
+<% } %>
