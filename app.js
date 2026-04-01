@@ -14,6 +14,7 @@ const User = require("./models/user.js");
 // requiring the routes (express routers)
 const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
+const { Users } = require("lucide-react");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -61,10 +62,11 @@ app.use(flash());
 //
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(new LocalStrategy(User.authenticate()));
+passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
 
 
 // middleware for flash
@@ -74,12 +76,14 @@ app.use((req,res,next)=>{
     next();
 });
 
-app.get("demoUser", async(req,res)=>{
+app.get("/demoUser", async(req,res)=>{
     let fakeUser = new User({
-        email:"vikash@gmail.com"
-    })
-    email: "vk4845646@gmail.com",
-    username: "vikashhhh"
+        email:"vikash@gmail.com",
+        username: "vikashhhh"
+    });
+
+    let registeredUser = await User.register(fakeUser,"helloworld");
+    res.send(registeredUser);
 })
 
 
