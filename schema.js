@@ -6,10 +6,12 @@ module.exports.listingSchema = Joi.object({
         description: Joi.string().required(),
         location: Joi.string().required(),
         country: Joi.string().required(),
-        price: Joi.number().required().min(0),
+        price: Joi.number().required().min(0).messages({
+            "number.min": "Price cannot be negative.",
+            "number.base": "Price must be a valid number.",
+            "any.required": "Price is required."
+        }),
         image: Joi.string().allow("",null)
-        
-        
     }).required()
 })
 
