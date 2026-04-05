@@ -1,4 +1,5 @@
 const Listing = require("./models/listing");
+const Review = require("./models/review");
 const ExpressError = require("./utils/ExpressError.js");
 const {listingSchema,reviewSchema} = require("./schema.js");
 
@@ -20,6 +21,7 @@ module.exports.saveRedirectUrl = (req, res, next) =>{
     next();
 };
 
+ // for listing owner 
 module.exports.isOwner = async(req, res, next) =>{
     let { id } = req.params;
     let listing = await Listing.findById(id);
@@ -57,4 +59,16 @@ module.exports.validateReview = (req, res, next)=>{
         throw new ExpressError(400, errMsg);
     }
     next();
+};
+
+
+ // for review author 
+module.exports.isReviewAuthor = async(req, res, next) =>{
+    let {id, reviewId } = req.params;
+    let review = await Review.findById(reviewId);
+    if(!review.author.equals(res.locals.currUser._id)){
+        req.flash("error", "Access Denied! This review belongs to someone else.");
+        return res.redirect(`/listings/${id}`);
+    }
+    next(); 
 };
