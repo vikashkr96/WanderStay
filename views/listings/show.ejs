@@ -16,13 +16,9 @@
 
             <!-- Listing Details -->
             <div class="mb-4">
-                <p class="mb-1">
-                    <%= listing.description %>
-                </p>
-
-                <p class="mb-1">
-                    ₹ <%= listing.price.toLocaleString("en-IN") %>
-                </p>
+                <p class="mb-1">  <i> Owened by: <%= listing.owner.username %> </i> </p>
+                <p class="mb-1">  <%= listing.description %> </p>
+                <p class="mb-1">₹ <%= listing.price.toLocaleString("en-IN") %> </p>
 
                 <p class="mb-1">
                     <%= listing.location %>
@@ -32,7 +28,7 @@
                     <%= listing.country %>
                 </p>
 
-                <!-- Buttons -->
+                <!-- Buttons --> 
                 <div class="d-flex gap-3 mb-4">
 
                     <a href="/listings/<%= listing._id %>/edit" class="btn btn-danger btn-sm px-4">
