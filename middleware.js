@@ -4,12 +4,21 @@ const ExpressError = require("./utils/ExpressError.js");
 const {listingSchema,reviewSchema} = require("./schema.js");
 
 
-module.exports.isLoggedIn = (req, res , next)=>{
-    if(!req.isAuthenticated()){
-        // redirect Url
-        req.session.redirectUrl = req.originalUrl;  // but it will be reset by the passport after login so we wont get anything for this we can create another middleware that save this into locals and passport has not access to reset local variables 
-        req.flash("error" , "you must be logged-in to add new listings");
+module.exports.isLoggedIn = (req, res, next) => {
+    if (!req.isAuthenticated()) {
+        // Only save GET requests — DELETE/POST/PATCH URLs can't be replayed after redirect
+        if (req.method === "GET") {
+            req.session.redirectUrl = req.originalUrl;
+        }
+        req.flash("error", "you must be logged-in to add new listings");
         return res.redirect("/login");
+    }
+    next();
+};
+
+module.exports.saveRedirectUrl = (req, res, next) => {
+    if (req.session.redirectUrl) {
+        res.locals.redirectUrl = req.session.redirectUrl;
     }
     next();
 };
