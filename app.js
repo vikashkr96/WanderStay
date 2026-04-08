@@ -77,19 +77,6 @@ app.use((req,res,next)=>{
     next();
 });
 
-// app.get("/demoUser", async(req,res)=>{
-//     let fakeUser = new User({
-//         email:"vikash@gmail.com",
-//         username: "vikashhhh"
-//     });
-
-//     let registeredUser = await User.register(fakeUser,"helloworld");
-//     res.send(registeredUser);
-// })
-
-
-
-
 
 app.use("/listings",listingRouter);
 app.use("/listings/:id/reviews",reviewRouter);
