@@ -112,3 +112,20 @@ body{
     background-color: #222 !important;
     border: none !important;
 }
+
+
+/* map */
+
+#map {
+  height: 380px;
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #dee2e6;
+  margin-top: 0.5rem;
+}
+
+.mapboxgl-ctrl-group {
+  border-radius: 10px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+}
