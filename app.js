@@ -104,7 +104,7 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render("error.ejs", { message, statusCode });
 });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
     console.log(`Server Started Running on port ${PORT}!`);
 });
