@@ -10,6 +10,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
 const session = require("express-session");
+const MongoStore = require("connect-mongo").default;
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -28,18 +29,31 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
 // connecting to the database
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+
+const dbURL = process.env.ATLASDB_URL;
+
+
 main().then(() => {
     console.log("Connected to DB");
 }).catch((err) => {
     console.log(err);
 });
 async function main() {
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(dbURL);
 }
 
+// Mongo Store for session storage
+const store = MongoStore.create({
+    mongoUrl:dbURL,
+    crypto:{
+        secret:"mysupersecretcode"
+    },
+    touchAfter: 24*3600,
+})
+console.log(MongoStore);
 // session options 
 const sessionOption = {
+    store ,
     secret: "mysupersecretcode",
     resave:false,
     saveUninitialized: true,
@@ -49,13 +63,6 @@ const sessionOption = {
         httpOnly: true,
     },
 }
-
-
-
-// home route
-app.get("/", async (req, res) => {
-    res.send("im at root");
-});
 
 
 // using sessions

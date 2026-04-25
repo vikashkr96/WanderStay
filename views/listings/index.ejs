@@ -1,21 +1,385 @@
-<% layout("layouts/boilerplate") %> 
+<% layout("layouts/boilerplate") %>
+<% const query = locals.query || {}; %>
 
-    <body>
-        <h2>All Listings..</h2>
-        <!-- <form action="/listings/new" method="GET"><button>Add a new listing</button></form> -->
-        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
-            <%for(let Listing of allListings){ %>
-            <a href="/listings/<%=Listing._id%>" class="listing-link">
-            <div class="card col listing-card" >
-                <img src="<%=Listing.image.url%>" class="card-img-top" alt="listing-image" style="height: 20rem;" >
-                <div class="card-img-overlay"></div>
-                <div class="card-body">
-                    <p class="card-text"><b><%=Listing.title%></b></p> 
-                    <p class="card-text">&#8377; <%= Listing.price.toLocaleString("en-IN")%> / night</p>
-                </div>
+
+<body>
+
+  <div class="filter-wrapper">
+
+    <!-- Left Arrow -->
+    <button class="scroll-btn" onclick="scrollFilters(-200)">
+      <i class="fa-solid fa-chevron-left" style="font-size:12px;"></i>
+    </button>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar" id="filterBar">
+      <a href="?filter=trending" class="filter-item <%= (query.filter === 'trending') ? 'active' : '' %>">
+        <i class="fa-solid fa-fire"></i><span>Trending</span>
+      </a>
+      <a href="?filter=rooms" class="filter-item <%= (query.filter === 'rooms') ? 'active' : '' %>">
+        <i class="fa-solid fa-door-open"></i><span>Rooms</span>
+      </a>
+      <a href="?filter=iconic_cities" class="filter-item <%= (query.filter === 'iconic_cities') ? 'active' : '' %>">
+        <i class="fa-solid fa-city"></i><span>Iconic Cities</span>
+      </a>
+      <a href="?filter=beachfront" class="filter-item <%= (query.filter === 'beachfront') ? 'active' : '' %>">
+        <i class="fa-solid fa-umbrella-beach"></i><span>Beachfront</span>
+      </a>
+      <a href="?filter=mountains" class="filter-item <%= (query.filter === 'mountains') ? 'active' : '' %>">
+        <i class="fa-solid fa-mountain"></i><span>Mountains</span>
+      </a>
+      <a href="?filter=cabins" class="filter-item <%= (query.filter === 'cabins') ? 'active' : '' %>">
+        <i class="fa-solid fa-house-chimney"></i><span>Cabins</span>
+      </a>
+      <a href="?filter=farms" class="filter-item <%= (query.filter === 'farms') ? 'active' : '' %>">
+        <i class="fa-solid fa-tractor"></i><span>Farms</span>
+      </a>
+      <a href="?filter=camping" class="filter-item <%= (query.filter === 'camping') ? 'active' : '' %>">
+        <i class="fa-solid fa-campground"></i><span>Camping</span>
+      </a>
+      <a href="?filter=pools" class="filter-item <%= (query.filter === 'pools') ? 'active' : '' %>">
+        <i class="fa-solid fa-person-swimming"></i><span>Pools</span>
+      </a>
+      <a href="?filter=luxury" class="filter-item <%= (query.filter === 'luxury') ? 'active' : '' %>">
+        <i class="fa-solid fa-gem"></i><span>Luxury</span>
+      </a>
+      <a href="?filter=tiny_homes" class="filter-item <%= (query.filter === 'tiny_homes') ? 'active' : '' %>">
+        <i class="fa-solid fa-house-medical"></i><span>Tiny Homes</span>
+      </a>
+      <a href="?filter=lake" class="filter-item <%= (query.filter === 'lake') ? 'active' : '' %>">
+        <i class="fa-solid fa-water"></i><span>Lakefront</span>
+      </a>
+      <a href="?filter=historical" class="filter-item <%= (query.filter === 'historical') ? 'active' : '' %>">
+        <i class="fa-solid fa-landmark"></i><span>Historical</span>
+      </a>
+      <a href="?filter=arctic" class="filter-item <%= (query.filter === 'arctic') ? 'active' : '' %>">
+        <i class="fa-solid fa-snowflake"></i><span>Arctic</span>
+      </a>
+      <a href="?filter=desert" class="filter-item <%= (query.filter === 'desert') ? 'active' : '' %>">
+        <i class="fa-solid fa-sun"></i><span>Desert</span>
+      </a>
+    </div>
+
+    <!-- Right Arrow -->
+    <button class="scroll-btn" onclick="scrollFilters(200)">
+      <i class="fa-solid fa-chevron-right" style="font-size:12px;"></i>
+    </button>
+
+    <div class="filter-divider"></div>
+
+    <!-- Filter Popup Button -->
+    <button class="filter-btn" onclick="openFilterModal()">
+      <i class="fa-solid fa-sliders"></i>
+      Filters
+      <span class="badge-count" id="filterBadge">0</span>
+    </button>
+
+    <!-- Tax Toggle -->
+    <div class="tax-toggle-box">
+      <span class="toggle-label">Display total</span>
+      <span class="toggle-sub">after taxes</span>
+      <div class="toggle-row">
+        <label class="switch">
+          <input type="checkbox" id="taxToggle">
+          <span class="slider-toggle"></span>
+        </label>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Filter Modal Overlay -->
+  <div class="filter-overlay" id="filterOverlay" onclick="handleOverlayClick(event)">
+    <div class="filter-modal">
+
+      <div class="filter-modal-header">
+        <h6>Filters</h6>
+        <button class="close-btn" onclick="closeFilterModal()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="filter-modal-body">
+
+        <!-- Price Range -->
+        <div class="filter-section">
+          <div class="filter-section-title">Price range (per night)</div>
+          <div class="price-range-wrap">
+            <div class="range-slider-wrap">
+              <div class="range-track"></div>
+              <div class="range-fill" id="rangeFill"></div>
+              <input type="range" id="minPrice" min="2000" max="200000" value="2000" step="500">
+              <input type="range" id="maxPrice" min="2000" max="200000" value="200000" step="500">
             </div>
-            </a>
-            <%}%>
+            <div class="price-range-inputs">
+              <div class="price-input-box">
+                <label>MINIMUM</label>
+                <input type="number" id="minPriceInput" value="2000">
+              </div>
+              <div class="price-input-box">
+                <label>MAXIMUM</label>
+                <input type="number" id="maxPriceInput" value="200000">
+              </div>
+            </div>
+          </div>
         </div>
-        
-    </body>
+
+        <!-- Country -->
+        <div class="filter-section">
+          <div class="filter-section-title">Country</div>
+          <div class="chip-group" id="countryChips">
+            <div class="chip" data-value="India">🇮🇳 India</div>
+            <div class="chip" data-value="France">🇫🇷 France</div>
+            <div class="chip" data-value="Japan">🇯🇵 Japan</div>
+            <div class="chip" data-value="USA">🇺🇸 USA</div>
+            <div class="chip" data-value="Italy">🇮🇹 Italy</div>
+            <div class="chip" data-value="Thailand">🇹🇭 Thailand</div>
+            <div class="chip" data-value="UAE">🇦🇪 UAE</div>
+            <div class="chip" data-value="UK">🇬🇧 UK</div>
+          </div>
+        </div>
+
+        <!-- Location / City -->
+        <div class="filter-section">
+          <div class="filter-section-title">Location</div>
+          <input type="text" class="modal-input" id="locationInput" placeholder="e.g. Mumbai, Paris, Bali...">
+        </div>
+
+        <!-- Property Type -->
+        <div class="filter-section">
+          <div class="filter-section-title">Property type</div>
+          <div class="chip-group" id="propertyChips">
+            <div class="chip" data-value="house"><i class="fa-solid fa-house"></i> House</div>
+            <div class="chip" data-value="apartment"><i class="fa-regular fa-building"></i> Apartment</div>
+            <div class="chip" data-value="villa"><i class="fa-solid fa-mountain-city"></i> Villa</div>
+            <div class="chip" data-value="hotel"><i class="fa-solid fa-hotel"></i> Hotel</div>
+            <div class="chip" data-value="cottage"><i class="fa-solid fa-person-shelter"></i> Cottage</div>
+            <div class="chip" data-value="resort"><i class="fa-solid fa-house-flag"></i> Resort</div>
+          </div>
+        </div>
+
+        <!-- Amenities -->
+        <div class="filter-section">
+          <div class="filter-section-title">Amenities</div>
+          <div class="chip-group" id="amenityChips">
+            <div class="chip" data-value="wifi"><i class="fa-solid fa-wifi"></i> Wifi</div>
+            <div class="chip" data-value="pool"><i class="fa-solid fa-person-swimming"></i> Pool</div>
+            <div class="chip" data-value="ac"><i class="fa-solid fa-fan"></i> AC</div>
+            <div class="chip" data-value="parking"><i class="fa-solid fa-car"></i> Parking</div>
+            <div class="chip" data-value="kitchen"><i class="fa-solid fa-kitchen-set"></i> Kitchen</div>
+            <div class="chip" data-value="pet_friendly"><i class="fa-solid fa-dog"></i> Pet Friendly</div>
+            <div class="chip" data-value="gym"><i class="fa-solid fa-dumbbell"></i> Gym</div>
+            <div class="chip" data-value="beach_access"><i class="fa-solid fa-umbrella-beach"></i> Beach Access</div>
+          </div>
+        </div>
+
+        <!-- Guest Rating -->
+        <div class="filter-section">
+          <div class="filter-section-title">Guest rating</div>
+          <div class="star-group" id="ratingChips">
+            <div class="star-chip" data-value="3">3+ <i class="fa-solid fa-star"></i></div>
+            <div class="star-chip" data-value="3.5">3.5+ <i class="fa-solid fa-star"></i></div>
+            <div class="star-chip" data-value="4">4+ <i class="fa-solid fa-star"></i></div>
+            <div class="star-chip" data-value="4.5">4.5+ <i class="fa-solid fa-star"></i></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="filter-modal-footer">
+        <button class="btn-clear-all" onclick="clearAllFilters()">Clear all</button>
+        <button class="btn-apply" onclick="applyModalFilters()">Show results</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Listings Grid -->
+  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1" id="listingsGrid">
+    <% for(let Listing of allListings) { %>
+    <a href="/listings/<%= Listing._id %>" class="listing-link"
+       data-price="<%= Listing.price %>"
+       data-country="<%= Listing.country %>"
+       data-location="<%= Listing.location %>">
+      <div class="card col listing-card">
+        <img src="<%= Listing.image.url %>" class="card-img-top" alt="listing-image" style="height: 20rem;">
+        <div class="card-img-overlay"></div>
+        <div class="card-body">
+          <p class="card-text"><b><%= Listing.title %></b></p>
+          <p class="card-text base-price">&#8377; <%= Listing.price.toLocaleString("en-IN") %> / night</p>
+        </div>
+      </div>
+    </a>
+    <% } %>
+  </div>
+
+  <!-- Lottie CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+
+  <% if(allListings.length === 0) { %>
+  <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 40vh;">
+    <div id="lottie-empty" style="width: 280px; height: 280px;"></div>
+    <h5 class="mt-2 text-muted fw-semibold">No listings found</h5>
+    <p class="text-muted" style="font-size: 14px;">Try a different category or check back later.</p>
+    <a href="/listings" class="btn btn-outline-dark btn-sm mt-2">Clear Filter</a> <br><br>
+  </div>
+  <script>
+    lottie.loadAnimation({
+      container: document.getElementById('lottie-empty'),
+      renderer: 'svg', loop: true, autoplay: true,
+      path: 'https://assets2.lottiefiles.com/packages/lf20_hl5n0bwb.json'
+    });
+  </script>
+  <% } %>
+
+  <script>
+    const TAX_RATE = 0.18;
+    const taxToggle = document.getElementById('taxToggle');
+    const cards = document.querySelectorAll('#listingsGrid .listing-link');
+
+    // ── Scroll arrows ──
+    function scrollFilters(amount) {
+      document.getElementById('filterBar').scrollBy({ left: amount, behavior: 'smooth' });
+    }
+
+    // ── Tax toggle ──
+    taxToggle.addEventListener('change', () => {
+      cards.forEach(card => {
+        const base = parseInt(card.dataset.price);
+        const price = taxToggle.checked ? base * (1 + TAX_RATE) : base;
+        const el = card.querySelector('.base-price');
+        el.innerHTML = '₹' + Math.round(price).toLocaleString('en-IN') + ' / night'
+          + (taxToggle.checked ? ' <small style="color:#717171;font-size:11px;">incl. 18% GST</small>' : '');
+      });
+    });
+
+    // ── Modal open/close ──
+    function openFilterModal() {
+      document.getElementById('filterOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeFilterModal() {
+      document.getElementById('filterOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('filterOverlay')) closeFilterModal();
+    }
+
+    // ── Price range dual slider ──
+    const minSlider = document.getElementById('minPrice');
+    const maxSlider = document.getElementById('maxPrice');
+    const minInput  = document.getElementById('minPriceInput');
+    const maxInput  = document.getElementById('maxPriceInput');
+    const rangeFill = document.getElementById('rangeFill');
+
+    function updateRangeFill() {
+      const min = parseInt(minSlider.value);
+      const max = parseInt(maxSlider.value);
+      const total = 200000 - 2000;
+      const left  = ((min - 2000) / total) * 100;
+      const right = ((max - 2000) / total) * 100;
+      rangeFill.style.left  = left + '%';
+      rangeFill.style.width = (right - left) + '%';
+      minInput.value = min;
+      maxInput.value = max;
+    }
+
+    minSlider.addEventListener('input', () => {
+      if (parseInt(minSlider.value) >= parseInt(maxSlider.value))
+        minSlider.value = parseInt(maxSlider.value) - 500;
+      updateRangeFill();
+    });
+
+    maxSlider.addEventListener('input', () => {
+      if (parseInt(maxSlider.value) <= parseInt(minSlider.value))
+        maxSlider.value = parseInt(minSlider.value) + 500;
+      updateRangeFill();
+    });
+
+    minInput.addEventListener('change', () => {
+      minSlider.value = minInput.value;
+      updateRangeFill();
+    });
+
+    maxInput.addEventListener('change', () => {
+      maxSlider.value = maxInput.value;
+      updateRangeFill();
+    });
+
+    updateRangeFill();
+
+    // ── Chip toggle ──
+    document.querySelectorAll('.chip, .star-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const group = chip.closest('.chip-group, .star-group');
+        // single select for rating, multi for others
+        if (chip.classList.contains('star-chip')) {
+          group.querySelectorAll('.star-chip').forEach(c => c.classList.remove('selected'));
+        }
+        chip.classList.toggle('selected');
+        updateBadge();
+      });
+    });
+
+    // ── Badge count ──
+    function updateBadge() {
+      let count = 0;
+      const min = parseInt(minSlider.value);
+      const max = parseInt(maxSlider.value);
+      if (min > 2000 || max < 200000) count++;
+      count += document.querySelectorAll('#countryChips .chip.selected').length;
+      count += document.querySelectorAll('#propertyChips .chip.selected').length;
+      count += document.querySelectorAll('#amenityChips .chip.selected').length;
+      if (document.querySelector('#ratingChips .star-chip.selected')) count++;
+      if (document.getElementById('locationInput').value.trim()) count++;
+
+      const badge = document.getElementById('filterBadge');
+      badge.textContent = count;
+      count > 0 ? badge.classList.add('show') : badge.classList.remove('show');
+    }
+
+    document.getElementById('locationInput').addEventListener('input', updateBadge);
+    minSlider.addEventListener('input', updateBadge);
+    maxSlider.addEventListener('input', updateBadge);
+
+    // ── Apply filters ──
+    function applyModalFilters() {
+      const minP = parseInt(minSlider.value);
+      const maxP = parseInt(maxSlider.value);
+      const selectedCountries = [...document.querySelectorAll('#countryChips .chip.selected')]
+        .map(c => c.dataset.value.toLowerCase());
+      const locationVal = document.getElementById('locationInput').value.trim().toLowerCase();
+
+      cards.forEach(card => {
+        const price    = parseInt(card.dataset.price);
+        const country  = (card.dataset.country || '').toLowerCase();
+        const location = (card.dataset.location || '').toLowerCase();
+
+        const priceOk    = price >= minP && price <= maxP;
+        const countryOk  = selectedCountries.length === 0 || selectedCountries.includes(country);
+        const locationOk = !locationVal || location.includes(locationVal) || country.includes(locationVal);
+
+        card.style.display = (priceOk && countryOk && locationOk) ? '' : 'none';
+      });
+
+      updateBadge();
+      closeFilterModal();
+    }
+
+    // ── Clear all ──
+    function clearAllFilters() {
+      minSlider.value = 2000;
+      maxSlider.value = 200000;
+      updateRangeFill();
+      document.querySelectorAll('.chip.selected, .star-chip.selected')
+        .forEach(c => c.classList.remove('selected'));
+      document.getElementById('locationInput').value = '';
+      cards.forEach(card => card.style.display = '');
+      updateBadge();
+    }
+  </script>
+
+</body>

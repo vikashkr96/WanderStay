@@ -2,84 +2,84 @@
 
 <div class="container mt-5 mb-5">
     <div class="row justify-content-center">
-        
-      
         <div class="col-md-7 offset-md-0">
-            
             <div class="card shadow border-0 rounded-4">
                 <div class="card-body p-4">
 
-                    <h3 class="text-center mb-4 fw-bold ">Create New Listing </h3>
+                    <h3 class="text-center mb-4 fw-bold">Create New Listing</h3>
                     <br>
 
                     <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
 
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Title</label>
-                            <input name="listing[title]" 
-                                   class="form-control rounded-3"
-                                   type="text" 
-                                   required>
-                                   <div class="valid-feedback">Title looks good</div>
+                            <input name="listing[title]" class="form-control rounded-3" type="text" required>
+                            <div class="valid-feedback">Title looks good</div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Description</label>
-                            <textarea name="listing[description]" 
-                                      class="form-control rounded-3"
-                                      rows="4"
-                                      required></textarea>
-                                      <div class="invalid-feedback">Please enter a short description</div>
+                            <textarea name="listing[description]" class="form-control rounded-3" rows="4" required></textarea>
+                            <div class="invalid-feedback">Please enter a short description</div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Upload Listing image</label>
-                            <input name="listing[image]" 
-                                   class="form-control rounded-3"
-                                   type="file"
-                                   required>
-                                   <div class="valid-feedback">Looks good</div>
+                            <label class="form-label fw-semibold">Upload Listing Image</label>
+                            <input name="listing[image]" class="form-control rounded-3" type="file" required>
+                            <div class="valid-feedback">Looks good</div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-semibold">Price (₹)</label>
-                                <input name="listing[price]" 
-                                       class="form-control rounded-3"
-                                       type="number" 
-                                       required>
-                                       <div class="invalid-feedback">Price should be valid</div>
+                                <input name="listing[price]" class="form-control rounded-3" type="number" required>
+                                <div class="invalid-feedback">Price should be valid</div>
                             </div>
-                        
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-semibold">Country</label>
-                                <input name="listing[country]" 
-                                       class="form-control rounded-3"
-                                       type="text" 
-                                       required>
-                                       <div class="invalid-feedback">Country name should be valid</div>
+                                <input name="listing[country]" class="form-control rounded-3" type="text" required>
+                                <div class="invalid-feedback">Country name should be valid</div>
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Location</label>
-                            <input name="listing[location]" 
-                                   class="form-control rounded-3"
-                                   type="text" 
-                                   required>
-                                   <div class="invalid-feedback">Location should be valid</div>
-                                   <br>
+                            <input name="listing[location]" class="form-control rounded-3" type="text" required>
+                            <div class="invalid-feedback">Location should be valid</div>
+                        </div>
+
+                        <!-- Category Dropdown -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Category</label>
+                            <select name="listing[category]" class="form-select rounded-3" required>
+                                <option value="" disabled selected>-- Select a Category --</option>
+                                <option value="trending">🔥 Trending</option>
+                                <option value="rooms">🚪 Rooms</option>
+                                <option value="iconic_cities">🏙️ Iconic Cities</option>
+                                <option value="beachfront">🏖️ Beachfront</option>
+                                <option value="mountains">⛰️ Mountains</option>
+                                <option value="cabins">🏡 Cabins</option>
+                                <option value="farms">🚜 Farms</option>
+                                <option value="camping">⛺ Camping</option>
+                                <option value="pools">🏊 Pools</option>
+                                <option value="luxury">💎 Luxury</option>
+                                <option value="tiny_homes">🏠 Tiny Homes</option>
+                                <option value="lake">💧 Lakefront</option>
+                                <option value="historical">🏛️ Historical</option>
+                                <option value="arctic">❄️ Arctic</option>
+                                <option value="desert">☀️ Desert</option>
+                            </select>
+                            <div class="invalid-feedback">Please select a category</div>
                         </div>
 
                         <div class="text-center">
-                            <button class="btn btn-primary  ">Add</button>
+                            <button class="btn btn-primary">Add</button>
                         </div>
 
                     </form>
 
                 </div>
             </div>
-
         </div>
     </div>
 </div>

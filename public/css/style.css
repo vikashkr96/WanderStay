@@ -1,7 +1,11 @@
 /* body */
 body{
     font-family: "plus jakarta-sans ", sans-serif !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
+
 
 
 /* navbar */
@@ -128,4 +132,515 @@ body{
 .mapboxgl-ctrl-group {
   border-radius: 10px !important;
   box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+}
+
+
+
+  .filter-wrapper {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 24px;
+    gap: 0;
+  }
+
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    overflow-x: auto;
+    padding: 16px 0 12px;
+    scrollbar-width: none;
+    flex: 1;
+  }
+
+  .filter-bar::-webkit-scrollbar { display: none; }
+
+  .filter-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.2s, opacity 0.2s;
+    white-space: nowrap;
+    text-decoration: none;
+    color: #717171;
+    flex-shrink: 0;
+  }
+
+  .filter-item:hover { border-bottom: 2px solid #222; color: #222; }
+  .filter-item.active { border-bottom: 2px solid #222; color: #222; }
+  .filter-item i { font-size: 22px; }
+  .filter-item span { font-size: 12px; font-weight: 500; }
+
+  .scroll-btn {
+    flex-shrink: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    transition: box-shadow 0.2s;
+  }
+  .scroll-btn:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+
+  /* Filter Button */
+  .filter-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: 1px solid #222;
+    border-radius: 12px;
+    background: white;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 550;
+    color: #222;
+    margin-left: 40px;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .filter-btn:hover { background: #f5f5f5; }
+  .filter-btn .badge-count {
+    background: #222;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .filter-btn .badge-count.show {
+    display: flex;
+  }
+
+  /* Tax Toggle */
+  .tax-toggle-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    flex-shrink: 0;
+    padding: 8px 16px 12px;
+    border-left: 1px solid #e0e0e0;
+    min-width: 100px;
+    margin-left: 40px;
+  }
+  .tax-toggle-box .toggle-label { font-size: 12px; font-weight: 600; color: #222; }
+  .tax-toggle-box .toggle-sub { font-size: 11px; color: #717171; }
+  .toggle-row { display: flex; align-items: center; gap: 8px; margin-top: 2px; }
+
+  .switch { position: relative; display: inline-block; width: 42px; height: 24px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .slider-toggle {
+    position: absolute; cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc; border-radius: 24px; transition: 0.3s;
+  }
+  .slider-toggle:before {
+    position: absolute; content: "";
+    height: 18px; width: 18px; left: 3px; bottom: 3px;
+    background-color: white; border-radius: 50%; transition: 0.3s;
+  }
+  .switch input:checked + .slider-toggle { background-color: #222; }
+  .switch input:checked + .slider-toggle:before { transform: translateX(18px); }
+
+  /* Filter Modal Overlay */
+  .filter-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }
+  .filter-overlay.open { 
+    display: flex;
+    margin-top: 30px
+   }
+
+  /* Filter Modal */
+  .filter-modal {
+    background: white;
+    border-radius: 20px;
+    width: 560px;
+    max-width: 95vw;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    animation: slideUp 0.25s ease;
+    margin-bottom: -50px
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .filter-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid #e0e0e0;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .filter-modal-header h6 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
+    color: #222;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #222;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .close-btn:hover { background: #f0f0f0; }
+
+  .filter-modal-body { padding: 20px 24px; }
+
+  /* Section */
+  .filter-section { margin-bottom: 28px; }
+  .filter-section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 14px;
+  }
+
+  /* Price Range */
+  .price-range-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .price-range-inputs {
+    display: flex;
+    gap: 12px;
+  }
+
+  .price-input-box {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .price-input-box label {
+    font-size: 10px;
+    color: #717171;
+    font-weight: 600;
+  }
+
+  .price-input-box input {
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: #222;
+    width: 100%;
+    padding: 0;
+  }
+
+  .range-slider-wrap {
+    position: relative;
+    height: 36px;
+    display: flex;
+    align-items: center;
+  }
+
+  .range-slider-wrap input[type="range"] {
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    appearance: none;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .range-slider-wrap input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #222;
+    cursor: pointer;
+    pointer-events: all;
+    border: 2px solid white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  }
+
+  .range-track {
+    position: absolute;
+    height: 4px;
+    background: #e0e0e0;
+    width: 100%;
+    border-radius: 4px;
+  }
+
+  .range-fill {
+    position: absolute;
+    height: 4px;
+    background: #222;
+    border-radius: 4px;
+  }
+
+  /* Chip filters */
+  .chip-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .chip {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 24px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #444;
+    transition: all 0.15s;
+    user-select: none;
+    background: white;
+  }
+
+  .chip:hover { border-color: #222; color: #222; }
+  .chip.selected { background: #222; color: white; border-color: #222; }
+
+  /* Text inputs inside modal */
+  .modal-input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #222;
+    outline: none;
+    transition: border 0.2s;
+    box-sizing: border-box;
+  }
+  .modal-input:focus { border-color: #222; }
+
+  /* Rating stars */
+  .star-group { display: flex; gap: 6px; }
+  .star-chip {
+    padding: 8px 14px;
+    border: 1px solid #ddd;
+    border-radius: 24px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #444;
+    transition: all 0.15s;
+    background: white;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .star-chip:hover { border-color: #222; }
+  .star-chip.selected { background: #222; color: white; border-color: #222; }
+
+  /* Footer */
+  .filter-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    border-top: 1px solid #e0e0e0;
+    position: sticky;
+    bottom: 0;
+    background: white;
+    border-radius: 0 0 20px 20px;
+  }
+
+  .btn-clear-all {
+    background: none;
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: #222;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+  }
+
+  .btn-apply {
+    background: #222;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-apply:hover { background: #000; }
+
+
+@media (max-width: 767px) {
+  .filter-wrapper {
+    flex-wrap: nowrap;
+    overflow: hidden;
+    gap: 4px;
+  }
+
+  .filter-bar {
+    padding: 10px 0 8px;
+  }
+
+  .filter-item {
+    padding: 6px 14px;
+  }
+
+  .filter-item i {
+    font-size: 18px;
+  }
+
+  .filter-item span {
+    font-size: 11px;
+  }
+
+  .scroll-btn {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+  }
+
+  /* Tax toggle compact on mobile */
+  .tax-toggle-box {
+    display: flex;
+    border-left: none;
+    padding: 8px 6px 12px;
+    min-width: unset;
+    gap: 2px;
+  }
+
+  .tax-toggle-box .toggle-label {
+    font-size: 10px;
+  }
+
+  .filter-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+    margin-right: -30px;
+  }
+
+  .filter-btn span {
+    display: none;
+  }
+}
+
+
+
+
+  /* Search Form */
+.search-form {
+  flex: 4;
+  max-width: 700px;
+  margin: 0 0 0 200px;
+}
+
+
+.search-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 40px;
+  padding: 6px 6px 6px 18px;
+  background: white;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  transition: box-shadow 0.2s;
+}
+
+.search-box:focus-within {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  border-color: #bbb;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #222;
+  background: transparent;
+  min-width: 0;
+}
+
+.search-input::placeholder {
+  color: #aaa;
+  font-weight: 400;
+}
+
+.search-divider {
+  width: 1px;
+  height: 20px;
+  background: #ddd;
+  margin: 0 10px;
+  flex-shrink: 0;
+}
+
+.search-btn {
+  background: #fe422d;
+  border: none;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.search-btn:hover {
+  background: #e03520;
+  transform: scale(1.05);
+}
+
+.search-btn i {
+  color: white;
+  font-size: 13px;
+}
+
+@media (max-width: 767px) {
+  .search-form {
+    max-width: calc(100% - 120px); /* leaves room for brand + toggler */
+    margin: 0 0 0 8px;
+  }
 }
