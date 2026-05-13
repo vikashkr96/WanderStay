@@ -641,6 +641,6 @@ body{
 @media (max-width: 767px) {
   .search-form {
     max-width: calc(100% - 120px); /* leaves room for brand + toggler */
-    margin: 0 0 0 8px;
+    margin-left: -30px;
   }
 }
